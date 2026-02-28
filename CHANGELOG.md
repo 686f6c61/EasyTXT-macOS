@@ -2,6 +2,24 @@
 
 Todos los cambios relevantes de EasyTXT se documentan en este archivo.
 
+## [1.0.1] - 2026-02-28
+
+### Changed
+
+- Versión de app actualizada a `1.0.1` en el bundle.
+- Release de mantenimiento centrada en estabilidad de edición y flujo diario.
+
+### Fixed
+
+- Atajos de edición restaurados y enrutados al editor activo:
+  - `Cmd+A` seleccionar todo
+  - `Cmd+C` copiar
+  - `Cmd+X` cortar
+  - `Cmd+V` pegar
+- Resultado de IA aplicado directamente en el documento completo/selección (sin popup recortado).
+- Limpieza de salida IA para evitar bloques markdown envolventes en texto final.
+- Persistencia reforzada para mantener contenido y pestañas de forma fiable al reabrir.
+
 ## [0.1.0] - 2026-02-28
 
 ### Added

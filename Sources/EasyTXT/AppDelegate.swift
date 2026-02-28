@@ -77,12 +77,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let redoItem = editMenu.addItem(withTitle: "Redo", action: Selector(("redo:")), keyEquivalent: "Z")
         setMenuIcon(redoItem, "arrow.uturn.forward")
         editMenu.addItem(.separator())
-        let cutItem = editMenu.addItem(withTitle: "Cut", action: #selector(NSText.cut(_:)), keyEquivalent: "x")
+        let cutItem = editMenu.addItem(withTitle: "Cut", action: #selector(cutText), keyEquivalent: "x")
         setMenuIcon(cutItem, "scissors")
-        let copyItem = editMenu.addItem(withTitle: "Copy", action: #selector(NSText.copy(_:)), keyEquivalent: "c")
+        let copyItem = editMenu.addItem(withTitle: "Copy", action: #selector(copyText), keyEquivalent: "c")
         setMenuIcon(copyItem, "doc.on.doc")
-        let pasteItem = editMenu.addItem(withTitle: "Paste", action: #selector(NSText.paste(_:)), keyEquivalent: "v")
+        let pasteItem = editMenu.addItem(withTitle: "Paste", action: #selector(pasteText), keyEquivalent: "v")
         setMenuIcon(pasteItem, "clipboard")
+        let selectAllItem = editMenu.addItem(withTitle: "Select All", action: #selector(selectAllText), keyEquivalent: "a")
+        setMenuIcon(selectAllItem, "selection.pin.in.out")
         editMenu.addItem(.separator())
         let findItem = editMenu.addItem(withTitle: "Find", action: #selector(showFind), keyEquivalent: "f")
         setMenuIcon(findItem, "magnifyingglass")
@@ -194,6 +196,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc private func showFind() { mainVC()?.showFind() }
     @objc private func showReplace() { mainVC()?.showReplace() }
+    @objc private func cutText() { mainVC()?.cutSelection() }
+    @objc private func copyText() { mainVC()?.copySelection() }
+    @objc private func pasteText() { mainVC()?.pasteClipboard() }
+    @objc private func selectAllText() { mainVC()?.selectAllText() }
     @objc private func insertImage() { mainVC()?.insertImage() }
     @objc private func resizeSelectedImage() { mainVC()?.resizeSelectedImage() }
     @objc private func duplicateLine() { mainVC()?.duplicateLine() }

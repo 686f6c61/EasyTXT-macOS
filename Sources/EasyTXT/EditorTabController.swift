@@ -283,6 +283,36 @@ final class EditorTabController: NSViewController, NSTextViewDelegate {
         findField.becomeFirstResponder()
     }
 
+    func cutSelection() {
+        guard let textView = activeTextView() else {
+            return
+        }
+        textView.cut(nil)
+    }
+
+    func copySelection() {
+        guard let textView = activeTextView() else {
+            return
+        }
+        textView.copy(nil)
+    }
+
+    func pasteClipboard() {
+        guard let textView = activeTextView() else {
+            return
+        }
+        textView.paste(nil)
+    }
+
+    func selectAllText() {
+        guard let textView = activeTextView() else {
+            return
+        }
+        textView.selectAll(nil)
+        view.window?.makeFirstResponder(textView)
+        updateStatus()
+    }
+
     func hideFindBar() {
         findBar.isHidden = true
         view.window?.makeFirstResponder(primaryTextView)

@@ -194,6 +194,22 @@ final class MainViewController: NSViewController, NSTabViewDelegate, EditorTabCo
         selectedTabController()?.showFindBar(replace: true)
     }
 
+    func cutSelection() {
+        selectedTabController()?.cutSelection()
+    }
+
+    func copySelection() {
+        selectedTabController()?.copySelection()
+    }
+
+    func pasteClipboard() {
+        selectedTabController()?.pasteClipboard()
+    }
+
+    func selectAllText() {
+        selectedTabController()?.selectAllText()
+    }
+
     func duplicateLine() {
         selectedTabController()?.duplicateLine()
     }
