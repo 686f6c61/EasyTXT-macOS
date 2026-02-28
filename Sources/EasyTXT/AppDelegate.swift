@@ -72,18 +72,24 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         main.addItem(editItem)
         let editMenu = NSMenu(title: "Edit")
         editItem.submenu = editMenu
-        let undoItem = editMenu.addItem(withTitle: "Undo", action: Selector(("undo:")), keyEquivalent: "z")
+        let undoItem = editMenu.addItem(withTitle: "Undo", action: #selector(undoText), keyEquivalent: "z")
+        undoItem.target = self
         setMenuIcon(undoItem, "arrow.uturn.backward")
-        let redoItem = editMenu.addItem(withTitle: "Redo", action: Selector(("redo:")), keyEquivalent: "Z")
+        let redoItem = editMenu.addItem(withTitle: "Redo", action: #selector(redoText), keyEquivalent: "Z")
+        redoItem.target = self
         setMenuIcon(redoItem, "arrow.uturn.forward")
         editMenu.addItem(.separator())
         let cutItem = editMenu.addItem(withTitle: "Cut", action: #selector(cutText), keyEquivalent: "x")
+        cutItem.target = self
         setMenuIcon(cutItem, "scissors")
         let copyItem = editMenu.addItem(withTitle: "Copy", action: #selector(copyText), keyEquivalent: "c")
+        copyItem.target = self
         setMenuIcon(copyItem, "doc.on.doc")
         let pasteItem = editMenu.addItem(withTitle: "Paste", action: #selector(pasteText), keyEquivalent: "v")
+        pasteItem.target = self
         setMenuIcon(pasteItem, "clipboard")
         let selectAllItem = editMenu.addItem(withTitle: "Select All", action: #selector(selectAllText), keyEquivalent: "a")
+        selectAllItem.target = self
         setMenuIcon(selectAllItem, "selection.pin.in.out")
         editMenu.addItem(.separator())
         let findItem = editMenu.addItem(withTitle: "Find", action: #selector(showFind), keyEquivalent: "f")
@@ -196,6 +202,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc private func showFind() { mainVC()?.showFind() }
     @objc private func showReplace() { mainVC()?.showReplace() }
+    @objc private func undoText() { mainVC()?.undoEdit() }
+    @objc private func redoText() { mainVC()?.redoEdit() }
     @objc private func cutText() { mainVC()?.cutSelection() }
     @objc private func copyText() { mainVC()?.copySelection() }
     @objc private func pasteText() { mainVC()?.pasteClipboard() }

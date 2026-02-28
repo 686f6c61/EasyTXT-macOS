@@ -283,6 +283,22 @@ final class EditorTabController: NSViewController, NSTextViewDelegate {
         findField.becomeFirstResponder()
     }
 
+    func undoEdit() {
+        guard let textView = activeTextView() else {
+            return
+        }
+        textView.undoManager?.undo()
+        updateStatus()
+    }
+
+    func redoEdit() {
+        guard let textView = activeTextView() else {
+            return
+        }
+        textView.undoManager?.redo()
+        updateStatus()
+    }
+
     func cutSelection() {
         guard let textView = activeTextView() else {
             return
@@ -535,7 +551,7 @@ final class EditorTabController: NSViewController, NSTextViewDelegate {
                     self.statusLabel.stringValue = "IA sin cambios"
                     return
                 }
-                self.applyAIOutput(normalized, targetRange: targetRange)
+                self.applyAIOutput(normalized, task: task, targetRange: targetRange)
                 self.statusLabel.stringValue = "IA aplicada"
             case .failure(let error):
                 self.statusLabel.stringValue = "Error IA"
@@ -1204,8 +1220,28 @@ final class EditorTabController: NSViewController, NSTextViewDelegate {
         return fallbackImage.size
     }
 
-    private func applyAIOutput(_ output: String, targetRange: NSRange?) {
+    private func applyAIOutput(_ output: String, task: AITask, targetRange: NSRange?) {
         guard let textView = activeTextView() else {
+            return
+        }
+
+        if task == .ideate {
+            let existing = textView.string
+            let separator: String
+            if existing.isEmpty || existing.hasSuffix("\n\n") {
+                separator = ""
+            } else if existing.hasSuffix("\n") {
+                separator = "\n"
+            } else {
+                separator = "\n\n"
+            }
+
+            let insertion = separator + output
+            let end = (existing as NSString).length
+            textView.textStorage?.replaceCharacters(in: NSRange(location: end, length: 0), with: insertion)
+            let start = end + (separator as NSString).length
+            textView.setSelectedRange(NSRange(location: start, length: (output as NSString).length))
+            syncModelFromEditor(textView)
             return
         }
 
@@ -1214,6 +1250,7 @@ final class EditorTabController: NSViewController, NSTextViewDelegate {
             textView.setSelectedRange(NSRange(location: targetRange.location, length: (output as NSString).length))
         } else {
             setEditorText(output)
+            return
         }
 
         syncModelFromEditor(textView)

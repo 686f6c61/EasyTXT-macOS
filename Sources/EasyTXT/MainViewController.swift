@@ -194,6 +194,14 @@ final class MainViewController: NSViewController, NSTabViewDelegate, EditorTabCo
         selectedTabController()?.showFindBar(replace: true)
     }
 
+    func undoEdit() {
+        selectedTabController()?.undoEdit()
+    }
+
+    func redoEdit() {
+        selectedTabController()?.redoEdit()
+    }
+
     func cutSelection() {
         selectedTabController()?.cutSelection()
     }
@@ -382,6 +390,8 @@ final class MainViewController: NSViewController, NSTabViewDelegate, EditorTabCo
         let newButton = makeToolbarButton(title: "New", symbol: "doc.badge.plus", action: #selector(newAction))
         let openButton = makeToolbarButton(title: "Open", symbol: "folder", action: #selector(openAction))
         let saveButton = makeToolbarButton(title: "Save", symbol: "square.and.arrow.down", action: #selector(saveAction))
+        let undoButton = makeToolbarButton(title: "Undo", symbol: "arrow.uturn.backward", action: #selector(undoAction))
+        let redoButton = makeToolbarButton(title: "Redo", symbol: "arrow.uturn.forward", action: #selector(redoAction))
         let findButton = makeToolbarButton(title: "Find", symbol: "magnifyingglass", action: #selector(findAction))
         let splitButton = makeToolbarButton(title: "Split", symbol: "rectangle.split.2x1", action: #selector(splitAction))
         let imageButton = makeToolbarButton(title: "Image", symbol: "photo", action: #selector(insertImageAction))
@@ -393,6 +403,8 @@ final class MainViewController: NSViewController, NSTabViewDelegate, EditorTabCo
             newButton,
             openButton,
             saveButton,
+            undoButton,
+            redoButton,
             findButton,
             splitButton,
             imageButton,
@@ -442,6 +454,8 @@ final class MainViewController: NSViewController, NSTabViewDelegate, EditorTabCo
         topBar.addArrangedSubview(newButton)
         topBar.addArrangedSubview(openButton)
         topBar.addArrangedSubview(saveButton)
+        topBar.addArrangedSubview(undoButton)
+        topBar.addArrangedSubview(redoButton)
         topBar.addArrangedSubview(findButton)
         topBar.addArrangedSubview(splitButton)
         topBar.addArrangedSubview(imageButton)
@@ -850,6 +864,8 @@ final class MainViewController: NSViewController, NSTabViewDelegate, EditorTabCo
     @objc private func newAction() { newDocument() }
     @objc private func openAction() { openDocument() }
     @objc private func saveAction() { saveDocument() }
+    @objc private func undoAction() { undoEdit() }
+    @objc private func redoAction() { redoEdit() }
     @objc private func findAction() { showFind() }
     @objc private func splitAction() { toggleSplitEditor() }
     @objc private func insertImageAction() { insertImage() }

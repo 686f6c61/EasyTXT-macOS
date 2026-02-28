@@ -41,9 +41,9 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
   <key>CFBundlePackageType</key>
   <string>APPL</string>
   <key>CFBundleShortVersionString</key>
-  <string>1.0.1</string>
+  <string>1.0.2</string>
   <key>CFBundleVersion</key>
-  <string>101</string>
+  <string>102</string>
   <key>CFBundleDocumentTypes</key>
   <array>
     <dict>

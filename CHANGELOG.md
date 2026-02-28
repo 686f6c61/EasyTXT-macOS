@@ -2,6 +2,25 @@
 
 Todos los cambios relevantes de EasyTXT se documentan en este archivo.
 
+## [1.0.2] - 2026-02-28
+
+### Added
+
+- Botones visibles de `Undo` y `Redo` en la barra superior.
+
+### Changed
+
+- `AI Idea` ahora añade ideas al final del documento en lugar de reemplazar el contenido existente.
+
+### Fixed
+
+- Atajos de edición estabilizados en toda la app:
+  - `Cmd+A` seleccionar todo
+  - `Cmd+C` copiar
+  - `Cmd+X` cortar
+  - `Cmd+V` pegar
+- Ruteo explícito de acciones de edición al editor activo para evitar fallos del responder chain.
+
 ## [1.0.1] - 2026-02-28
 
 ### Changed
