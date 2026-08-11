@@ -1,0 +1,41 @@
+name: Sincronizar con GitLab
+
+# Mirror this repo to gitlab.com/686f6c61-gr/github/<name>.
+# Do NOT use `git push --mirror`: after actions/checkout it also pushes
+# refs/remotes/origin/* as hidden refs (e.g. origin/main), which GitLab
+# rejects with "deny updating a hidden ref" and fails the whole job.
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Mirror branches and tags to GitLab
+        env:
+          GL_TOKEN: ${{ secrets.GL_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${GL_TOKEN:-}" ]; then
+            echo "GL_TOKEN not configured — skipping mirror (success)."
+            exit 0
+          fi
+          repo="${GITHUB_REPOSITORY#*/}"
+          url="https://oauth2:${GL_TOKEN}@gitlab.com/686f6c61-gr/github/${repo}.git"
+          git remote remove gitlab 2>/dev/null || true
+          git remote add gitlab "$url"
+          # Map origin/* remote-tracking refs onto real heads on GitLab.
+          git push gitlab "refs/remotes/origin/*:refs/heads/*" --force
+          # Tags (ignore if none)
+          if [ -n "$(git tag -l)" ]; then
+            git push gitlab --tags --force
+          fi
+          echo "Mirrored ${repo} to GitLab OK."
